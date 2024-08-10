@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+</head>
+
+<body>
+    <h2>User Registration Form</h2>
+    <form id="registrationForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
+        <button type="submit">Register</button>
+    </form>
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent form from submitting the traditional way
+
+            // Get form data
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            const userData = {
+                name: name,
+                email: email,
+                password: password
+            };
+
+            // Send data using AJAX POST method
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', 'http://localhost:3000/register', true);
+            xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log('User registered successfully');
+                    // Store data in local storage
+                    let users = JSON.parse(localStorage.getItem('users')) || [];
+                    users.push(userData);
+                    localStorage.setItem('users', JSON.stringify(users));
+
+                    // Redirect to new page to display users
+                    window.location.href = 'users';
+                }
+            };
+
+            xhr.send(JSON.stringify(userData));
+        });
+
+    </script>
+</body>
+
+</html>

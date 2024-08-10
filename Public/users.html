@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registered Users</title>
+</head>
+
+<body>
+    <h2>Registered Users</h2>
+    <ul id="userList"></ul>
+    <button onclick="addMoreUser()">Add New User</button>
+    <script>
+
+        function addMoreUser() {
+            window.location = 'http://localhost:3000/';
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('/api/users')
+                .then(response => response.json())
+                .then(data => {
+                    const userList = document.getElementById('userList');
+                    data.forEach(user => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = `Name: ${user.name}, Email: ${user.email}, Password:${user.password}`;
+                        userList.appendChild(listItem);
+                    });
+                })
+                .catch(error => console.error('Error fetching user data:', error));
+        });
+    </script>
+</body>
+
+</html>
